@@ -13,7 +13,6 @@ import java.util.List;
 
 import rx.Observable;
 import uk.co.ribot.androidboilerplate.data.DataManager;
-import uk.co.ribot.androidboilerplate.data.model.Ribot;
 import uk.co.ribot.androidboilerplate.test.common.TestDataFactory;
 import uk.co.ribot.androidboilerplate.ui.main.MainMvpView;
 import uk.co.ribot.androidboilerplate.ui.main.MainPresenter;
@@ -47,36 +46,36 @@ public class MainPresenterTest {
 
     @Test
     public void loadRibotsReturnsRibots() {
-        List<Ribot> ribots = TestDataFactory.makeListRibots(10);
-        when(mMockDataManager.getRibots())
+        List<Ribot> ribots = TestDataFactory.makeListUsers(10);
+        when(mMockDataManager.getGitHubUsers())
                 .thenReturn(Observable.just(ribots));
 
-        mMainPresenter.loadRibots();
-        verify(mMockMainMvpView).showRibots(ribots);
-        verify(mMockMainMvpView, never()).showRibotsEmpty();
+        mMainPresenter.loadUsers();
+        verify(mMockMainMvpView).showUsers(ribots);
+        verify(mMockMainMvpView, never()).showUsersEmpty();
         verify(mMockMainMvpView, never()).showError();
     }
 
     @Test
     public void loadRibotsReturnsEmptyList() {
-        when(mMockDataManager.getRibots())
+        when(mMockDataManager.getGitHubUsers())
                 .thenReturn(Observable.just(Collections.<Ribot>emptyList()));
 
-        mMainPresenter.loadRibots();
-        verify(mMockMainMvpView).showRibotsEmpty();
-        verify(mMockMainMvpView, never()).showRibots(anyListOf(Ribot.class));
+        mMainPresenter.loadUsers();
+        verify(mMockMainMvpView).showUsersEmpty();
+        verify(mMockMainMvpView, never()).showUsers(anyListOf(Ribot.class));
         verify(mMockMainMvpView, never()).showError();
     }
 
     @Test
     public void loadRibotsFails() {
-        when(mMockDataManager.getRibots())
+        when(mMockDataManager.getGitHubUsers())
                 .thenReturn(Observable.<List<Ribot>>error(new RuntimeException()));
 
-        mMainPresenter.loadRibots();
+        mMainPresenter.loadUsers();
         verify(mMockMainMvpView).showError();
-        verify(mMockMainMvpView, never()).showRibotsEmpty();
-        verify(mMockMainMvpView, never()).showRibots(anyListOf(Ribot.class));
+        verify(mMockMainMvpView, never()).showUsersEmpty();
+        verify(mMockMainMvpView, never()).showUsers(anyListOf(Ribot.class));
     }
 
 }

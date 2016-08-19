@@ -1,17 +1,25 @@
 apply plugin: 'com.android.application'
+apply plugin: 'me.tatarka.retrolambda'
 apply from: '../config/quality/quality.gradle'
 apply plugin: 'com.github.triplet.play'
 apply plugin: 'com.neenbedankt.android-apt'
+apply plugin: 'realm-android'
+
 //TODO uncomment line below after adding fabric api secret and key to fabric.properties
 //apply plugin: 'io.fabric'
 
 android {
     compileSdkVersion 24
-    buildToolsVersion '24'
+    buildToolsVersion '24.0.1'
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
 
     defaultConfig {
         applicationId 'uk.co.ribot.androidboilerplate'
-        minSdkVersion 16
+        minSdkVersion 19
         targetSdkVersion 24
         testInstrumentationRunner "${applicationId}.runner.RxAndroidJUnitRunner"
         versionCode 1000
@@ -79,8 +87,8 @@ play {
 }
 
 dependencies {
-    final PLAY_SERVICES_VERSION = '9.2.0'
-    final SUPPORT_LIBRARY_VERSION = '24.0.0'
+    final PLAY_SERVICES_VERSION = '9.4.0'
+    final SUPPORT_LIBRARY_VERSION = '24.2.0'
     final RETROFIT_VERSION = '2.1.0'
     final DAGGER_VERSION = '2.5'
     final DEXMAKER_VERSION = '1.4'

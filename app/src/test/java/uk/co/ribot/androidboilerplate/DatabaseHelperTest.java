@@ -13,10 +13,6 @@ import java.util.Arrays;
 import java.util.List;
 
 import rx.observers.TestSubscriber;
-import uk.co.ribot.androidboilerplate.data.local.DatabaseHelper;
-import uk.co.ribot.androidboilerplate.data.local.Db;
-import uk.co.ribot.androidboilerplate.data.local.DbOpenHelper;
-import uk.co.ribot.androidboilerplate.data.model.Ribot;
 import uk.co.ribot.androidboilerplate.test.common.TestDataFactory;
 import uk.co.ribot.androidboilerplate.util.DefaultConfig;
 import uk.co.ribot.androidboilerplate.util.RxSchedulersOverrideRule;
@@ -38,8 +34,8 @@ public class DatabaseHelperTest {
 
     @Test
     public void setRibots() {
-        Ribot ribot1 = TestDataFactory.makeRibot("r1");
-        Ribot ribot2 = TestDataFactory.makeRibot("r2");
+        Ribot ribot1 = TestDataFactory.makeUser("r1");
+        Ribot ribot2 = TestDataFactory.makeUser("r2");
         List<Ribot> ribots = Arrays.asList(ribot1, ribot2);
 
         TestSubscriber<Ribot> result = new TestSubscriber<>();
@@ -58,8 +54,8 @@ public class DatabaseHelperTest {
 
     @Test
     public void getRibots() {
-        Ribot ribot1 = TestDataFactory.makeRibot("r1");
-        Ribot ribot2 = TestDataFactory.makeRibot("r2");
+        Ribot ribot1 = TestDataFactory.makeUser("r1");
+        Ribot ribot2 = TestDataFactory.makeUser("r2");
         List<Ribot> ribots = Arrays.asList(ribot1, ribot2);
 
         mDatabaseHelper.setRibots(ribots).subscribe();

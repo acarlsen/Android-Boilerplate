@@ -14,8 +14,9 @@ import org.junit.runner.RunWith;
 
 import java.util.List;
 
+import io.realm.RealmResults;
 import rx.Observable;
-import uk.co.ribot.androidboilerplate.data.model.Ribot;
+import uk.co.ribot.androidboilerplate.data.model.GitHubUser;
 import uk.co.ribot.androidboilerplate.test.common.TestComponentRule;
 import uk.co.ribot.androidboilerplate.test.common.TestDataFactory;
 import uk.co.ribot.androidboilerplate.ui.main.MainActivity;
@@ -50,23 +51,19 @@ public class MainActivityTest {
     public final TestRule chain = RuleChain.outerRule(component).around(main);
 
     @Test
-    public void listOfRibotsShows() {
-        List<Ribot> testDataRibots = TestDataFactory.makeListRibots(20);
-        when(component.getMockDataManager().getRibots())
-                .thenReturn(Observable.just(testDataRibots));
+    public void listOfUserShows() {
+        List<GitHubUser> testDataUsers = TestDataFactory.makeListUsers(20);
+        when(component.getMockDataManager().getGitHubUsers())
+                .thenReturn(Observable.just(testDataUsers));
 
         main.launchActivity(null);
 
         int position = 0;
-        for (Ribot ribot : testDataRibots) {
-            onView(withId(R.id.recycler_view))
-                    .perform(RecyclerViewActions.scrollToPosition(position));
-            String name = String.format("%s %s", ribot.profile().name().first(),
-                    ribot.profile().name().last());
-            onView(withText(name))
-                    .check(matches(isDisplayed()));
-            onView(withText(ribot.profile().email()))
-                    .check(matches(isDisplayed()));
+        for (GitHubUser user : testDataUsers) {
+            onView(withId(R.id.recycler_view)).perform(RecyclerViewActions.scrollToPosition(position));
+            String name = String.format("%s (%s)", user.getName(), user.getLogin());
+            onView(withText(name)).check(matches(isDisplayed()));
+            onView(withText(user.public_repos)).check(matches(isDisplayed()));
             position++;
         }
     }

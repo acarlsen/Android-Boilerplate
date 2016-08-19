@@ -2,38 +2,37 @@ package uk.co.ribot.androidboilerplate.data.remote;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.ryanharter.auto.value.gson.AutoValueGsonTypeAdapterFactory;
-
-import java.util.List;
 
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 import retrofit2.http.GET;
+import retrofit2.http.Path;
 import rx.Observable;
-import uk.co.ribot.androidboilerplate.data.model.Ribot;
+import uk.co.ribot.androidboilerplate.data.model.GitHubUser;
 
-public interface RibotsService {
+public interface GitHubService {
 
-    String ENDPOINT = "https://api.ribot.io/";
+    String ENDPOINT = "https://api.github.com/";
 
-    @GET("ribots")
-    Observable<List<Ribot>> getRibots();
+    @GET("/users/{user}")
+    Observable<GitHubUser> user(@Path("user") String user);
 
     /******** Helper class that sets up a new services *******/
     class Creator {
 
-        public static RibotsService newRibotsService() {
+        public static GitHubService newGitHubService() {
             Gson gson = new GsonBuilder()
-                    .registerTypeAdapterFactory(new AutoValueGsonTypeAdapterFactory())
                     .setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
                     .create();
             Retrofit retrofit = new Retrofit.Builder()
-                    .baseUrl(RibotsService.ENDPOINT)
+                    .baseUrl(GitHubService.ENDPOINT)
                     .addConverterFactory(GsonConverterFactory.create(gson))
                     .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
                     .build();
-            return retrofit.create(RibotsService.class);
+
+            return retrofit.create(GitHubService.class);
         }
     }
+
 }

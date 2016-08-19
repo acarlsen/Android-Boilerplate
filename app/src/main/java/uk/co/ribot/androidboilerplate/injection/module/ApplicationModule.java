@@ -7,7 +7,10 @@ import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;
-import uk.co.ribot.androidboilerplate.data.remote.RibotsService;
+import io.realm.Realm;
+import io.realm.RealmConfiguration;
+import uk.co.ribot.androidboilerplate.BuildConfig;
+import uk.co.ribot.androidboilerplate.data.remote.GitHubService;
 import uk.co.ribot.androidboilerplate.injection.ApplicationContext;
 
 /**
@@ -34,8 +37,20 @@ public class ApplicationModule {
 
     @Provides
     @Singleton
-    RibotsService provideRibotsService() {
-        return RibotsService.Creator.newRibotsService();
+    GitHubService provideGitHubService() {
+        return GitHubService.Creator.newGitHubService();
+    }
+
+    @Provides
+    static RealmConfiguration provideRealmConfiguration(@ApplicationContext Context context) {
+        RealmConfiguration.Builder builder = new RealmConfiguration.Builder(context);
+        if(BuildConfig.DEBUG) { builder = builder.deleteRealmIfMigrationNeeded(); }
+        return builder.build();
+    }
+
+    @Provides
+    static Realm provideRealm(RealmConfiguration realmConfiguration) {
+        return Realm.getInstance(realmConfiguration);
     }
 
 }

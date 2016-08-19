@@ -1,20 +1,50 @@
 buildscript {
     repositories {
-        jcenter()
         maven { url 'https://maven.fabric.io/public' }
+        maven { url "https://jitpack.io" }
+        mavenCentral()
+        jcenter()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:2.1.2'
+        classpath 'com.android.tools.build:gradle:2.1.3'
         classpath 'com.github.triplet.gradle:play-publisher:1.1.4'
         classpath 'com.neenbedankt.gradle.plugins:android-apt:1.8'
         //noinspection GradleDynamicVersion
-        classpath 'io.fabric.tools:gradle:1.+'
+        classpath 'io.fabric.tools:gradle:1.21.6'
+        classpath "io.realm:realm-gradle-plugin:1.2.0"
+        classpath 'me.tatarka:gradle-retrolambda:3.2.5'
     }
 }
 
 allprojects {
     repositories {
-        jcenter()
         maven { url 'https://maven.fabric.io/public' }
+        maven { url "https://jitpack.io" }
+        mavenCentral()
+        jcenter()
     }
+}
+
+/**
+ * Get the version code from command line param
+ *
+ * @return int If the param -PversionCode is present then return int value or -1
+ */
+ext.getVersionCodeFromParameter = { ->
+
+    def code = project.hasProperty('versionCode') ? versionCode.toInteger() : 2000
+    println "VersionCode is set to $code"
+    return code
+}
+
+/**
+ * Get the version name from command line param
+ *
+ * @return string If the param -PversionName is present then return empty value
+ */
+ext.getVersionNameFromParameter = { ->
+
+    def code = project.hasProperty('versionName') ? versionName : "0.1.0_debug"
+    println "VersionName is set to $code"
+    return code
 }
